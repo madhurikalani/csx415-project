@@ -1,0 +1,61 @@
+---
+title: "AdFraudClick_Analysis"
+author: "Madhuri Kalani"
+date: "April 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r test}
+
+getwd()
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+library('ProjectTemplate')
+load.project()
+head(train.sample)
+str(train.sample)
+#Coerce the app column as Factor
+train.sample$app <- as.factor(train.sample$app)
+#Coerce the ip column as Factor
+train.sample$ip <- as.factor(train.sample$ip)
+#Coerce the device column as Factor
+train.sample$device <- as.factor(train.sample$device)
+#Coerce the os column as Factor
+train.sample$os <- as.factor(train.sample$os)
+#Coerce the channel column as Factor
+train.sample$channel <- as.factor(train.sample$channel)
+#Coerce the ip column as Factor
+train.sample$ip <- as.factor(train.sample$ip)
+#Coerce the click_time column as datetime
+train.sample$click_time <- as_datetime(train.sample$click_time)
+
+
+#Coerce the Size column as Numeric
+#StoreData$Size <- as.numeric(StoreData$Size) 
+str(train.sample) #verifying structure again for consistency
+# Checking Number of NAs in attributed_time columns
+?as_datetime
+hist((unique(as_datetime(train.sample[as.character(train.sample$attributed_time) != "",'attributed_time']))),"days",x_lab="date1",freq = TRUE)
+
+sum(is.na(Features$MarkDown2))
+sum(is.na(Features$MarkDown3))
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
