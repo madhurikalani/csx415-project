@@ -1,5 +1,5 @@
 ---
-title: "AdFraudClick_Analysis"
+title: "AdFraudClick_Detection"
 author: "Madhuri Kalani"
 date: "April 17, 2018"
 output: html_document
@@ -9,21 +9,74 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Ad_Fraud_Clicks_Detection
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The objective is to predict whether a user will download an application after clicking a mobile advertisement.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Looking at the data it looks like a classification problem that outputs two classes. 
+The training data and test data consists of 184 million and 1.8 million rows respectively. 
+Each row of training data contains a click record, with the following features:
 
-```{r test}
+1. ip: ip address of click.
+2. app: app id for marketing.
+3. device: device type id of user mobile phone (e.g., iphone 6 plus, huawei mate 7, etc.)
+4. os: os version id of user mobile phone
+5. channel: channel id of mobile ad publisher
+6. click_time: timestamp of click (UTC)
+7. attributed_time: if user download the app for after clicking an ad, this is the time of the app download
+8. is_attributed: the target that is to be predicted, indicating the app was downloaded (1= app downloaded, 0= not downloaded)
 
+Please note that ip, app, device, os, and channel are encoded. 
+
+Currently, I am beginning my analysis with 1 million rows of training data.
+
+The test data is similar, with the following
+differences:
+1. click_id: reference for making predictions
+2. is_attributed: not included
+
+### Step 1: Loading the Project and training data.
+```{r ch1, echo=FALSE, warning=FALSE,message=FALSE}
 getwd()
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+setwd("~/Ad_Fraud_Detection")
 library('ProjectTemplate')
 load.project()
-head(train.sample)
+head(as.data.frame(train.sample))
+
+```
+
+### Step 2: The training data contains 8 variables as shown above. I will be adding few more columns to the training data.
+#### Showing Structure and Summary of the training dataset
+```{r ch2, echo=FALSE,warning=FALSE,message=FALSE}
+train.sample$click_time <- as_datetime(train.sample$click_time)
+train.sample$click_hour <- hour(train.sample$click_time)
+train.sample$click_day <- weekdays(train.sample$click_time)
+train.sample$click_month <- month(train.sample$click_time)
 str(train.sample)
-#Coerce the app column as Factor
+## Summary
+summary(train.sample)
+```
+### Step 3: Finding correlation between columns in the training data set.
+
+```{r ch6, echo=FALSE,warning=FALSE,message=FALSE}
+
+M<-cor(train.sample[1:5])
+head(round(M,2))
+library('corrplot')
+corrplot(M, method="color")
+```
+
+### Step 4: Building a series of histogram to see the number of times an ip address, app, os, device and channel v alues have been used
+```{r ch3, echo=FALSE,warning=FALSE,message=FALSE}
+library(ggplot2)
+ggplot(data = melt(train.sample[,c(1:5)]), mapping = aes(x = value)) + 
+    geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x') + ggtitle(paste("Histogram tells the ",subtitle="number of times an ip, app, os, device and channel values have been used"))
+
+```
+
+### Step 5: Coercing the dataset and making independent variables as factors
+```{r ch4, echo=FALSE,warning=FALSE,message=FALSE}
+  #Coerce the app column as Factor
 train.sample$app <- as.factor(train.sample$app)
 #Coerce the ip column as Factor
 train.sample$ip <- as.factor(train.sample$ip)
@@ -35,27 +88,33 @@ train.sample$os <- as.factor(train.sample$os)
 train.sample$channel <- as.factor(train.sample$channel)
 #Coerce the ip column as Factor
 train.sample$ip <- as.factor(train.sample$ip)
-#Coerce the click_time column as datetime
-train.sample$click_time <- as_datetime(train.sample$click_time)
-
-
-#Coerce the Size column as Numeric
-#StoreData$Size <- as.numeric(StoreData$Size) 
-str(train.sample) #verifying structure again for consistency
-# Checking Number of NAs in attributed_time columns
-?as_datetime
-hist((unique(as_datetime(train.sample[as.character(train.sample$attributed_time) != "",'attributed_time']))),"days",x_lab="date1",freq = TRUE)
-
-sum(is.na(Features$MarkDown2))
-sum(is.na(Features$MarkDown3))
+str(train.sample)
 ```
 
-## Including Plots
+### Step 6: Checking how many times the app has been downloaded on hourly basis
+```{r ch5, echo=FALSE,warning=FALSE,message=FALSE}
+  #Coerce the app column as Factor
+tbl <- with(train.sample, table( is_attributed,click_hour))
 
-You can also embed plots, for example:
+barplot(tbl, beside = TRUE, legend = TRUE, main= "Hourly Click Frequency")
 
-```{r pressure, echo=FALSE}
-plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+### Step 7: As my analysis continues, I will be building KNN and logistic regression models to find out the actual number of app downloads. 
+
+### I will also be trying other models before final selection and fitting the model into the test data.
+
+
+
+```{r ch7, echo=FALSE,warning=FALSE,message=FALSE}
+
+```
+
+##### ---------------------------------------------------------------------------------------------work in progress--------------------------------------------
+
+
+
+
+
+
