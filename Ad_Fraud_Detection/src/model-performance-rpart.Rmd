@@ -1,0 +1,85 @@
+---
+title: "model-performance-linear"
+author: "Madhuri Kalani"
+date: "April 24, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+#Loading the Project
+
+```{r p0, echo =FALSE}
+
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+load.proje(file="temp.RData")
+
+
+```
+
+## Model Training
+
+You can also embed plots, for example:
+
+```{r c1, echo=FALSE}
+#Logistic Regression Model to Classify
+library('tree')
+library('rpart')
+#test$is_attributed <-0
+treefit <- rpart(is_attributed~ip+app+os+device+channel, method = "class", data = train.sample)
+printcp(treefit)
+plotcp(treefit)
+summary(treefit)
+
+# create additional plots 
+par(mfrow=c(1,2)) # two plots on one page 
+rsq.rpart(treefit) # visualize cross-validation results  	
+
+save.image(file="temp.RData")
+
+```
+
+## Fitting the Model
+### If the predicted value is greater than 0.5 then is_attributed = 1 else 0
+
+```{r p2, echo=FALSE}
+
+t6<-predict(logReg,ttdf,type="response")
+
+t7<-ifelse(t6 > 0.5,1,0)
+table(ttdf$is_attributed, t7)
+
+
+#save.image(file="temp.RData")
+
+```
+
+
+## Evaluation - Confusion Matrix
+### Step 1 Checking the Accuracy
+### Step 2 Building a Confusion Matrix
+
+```{r p3, echo=FALSE}
+
+MisClasificError <- mean(t7 != ttdf$is_attributed)
+print(paste('Accuracy',1-misClasificError))
+
+
+mean((t7 - as.numeric(ttdf$is_attributed))^2) 
+u = union(t7, as.numeric(ttdf$is_attributed))
+t = table(factor(t7, u), factor(as.numeric(ttdf$is_attributed), u))
+print("Confusion Matrix for Logisitc Regression")
+library('caret')
+confusionMatrix(t)
+
+
+
+```
