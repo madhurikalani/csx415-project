@@ -5,7 +5,7 @@
 
 ### Results of Logistic Regression
 
-The glm function was able to predict whether the user actually downloaded the mobile application or not, i.e. is_attributed = 1. But the results were not as good as seen in the training data set.
+The glm function was able to predict whether the user actually downloaded the mobile application or not, i.e. is_attributed = 1. But the results were not as good as seen in the training data set. As per the results, accuracy was 99% and error less than 1%.
 
 ### Results of Decison Tree using rpart
 
