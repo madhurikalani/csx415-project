@@ -1,0 +1,188 @@
+---
+title: "project-performance"
+author: "Madhuri Kalani"
+date: "April 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ad_Fraud_Clicks_Detection
+
+The objective is to predict whether a user will download an application after clicking a mobile advertisement.
+
+Looking at the data it looks like a classification problem that outputs two classes. 
+The training data and test data consists of 184 million and 1.8 million rows respectively. 
+Each row of training data contains a click record, with the following features:
+
+1. ip: ip address of click.
+2. app: app id for marketing.
+3. device: device type id of user mobile phone (e.g., iphone 6 plus, huawei mate 7, etc.)
+4. os: os version id of user mobile phone
+5. channel: channel id of mobile ad publisher
+6. click_time: timestamp of click (UTC)
+7. attributed_time: if user download the app for after clicking an ad, this is the time of the app download
+8. is_attributed: the target that is to be predicted, indicating the app was downloaded (1= app downloaded, 0= not downloaded)
+
+Please note that ip, app, device, os, and channel are encoded. 
+
+Currently, I am beginning my analysis with 1 million rows of training data.
+
+The test data is similar, with the following
+differences:
+1. click_id: reference for making predictions
+2. is_attributed: not included
+
+### Step 1: Loading the Project and training data.
+```{r ch1, echo=FALSE, warning=FALSE,message=FALSE}
+getwd()
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+library('ProjectTemplate')
+load.project()
+head(as.data.frame(train.sample))
+
+```
+
+### Step 2: The training data contains 8 variables as shown above. I will be adding few more columns to the training data.
+#### Showing Structure and Summary of the training dataset
+```{r ch2, echo=FALSE,warning=FALSE,message=FALSE}
+train.sample$click_time <- as_datetime(train.sample$click_time)
+test$click_time <- as_datetime(test$click_time)
+train.sample$click_hour <- hour(train.sample$click_time)
+train.sample$click_day <- weekdays(train.sample$click_time)
+train.sample$click_month <- month(train.sample$click_time)
+str(train.sample)
+## Summary
+summary(train.sample)
+testdf <- as.data.frame(test)
+library('lubridate')
+bound<-floor(0.5*nrow(testdf))
+df <- testdf[sample(nrow(testdf)), ]           #sample rows 
+df.test1 <- df[1:bound, ]              #get test1 set
+df.test2 <- df[(bound+1):nrow(df), ]    #get test2 set
+df.test1$is_attributed <-1
+train.sample$is_attributed <- as.factor(train.sample$is_attributed)
+#unique(train.sample$is_attributed)
+df.test1$is_attributed <- as.factor(df.test1$is_attributed)
+rm(bound)
+rm(testdf)
+rm(df)
+rm(test)
+ttdf <- data.frame(app=df.test1$app, channel=df.test1$channel,ip=df.test1$ip,is_attributed=df.test1$is_attributed,device=df.test1$device,os=df.test1$os)
+
+
+
+```
+### Step 3: Finding correlation between columns in the training data set.
+
+```{r ch6, echo=FALSE,warning=FALSE,message=FALSE}
+
+train.sample1 <- data.frame(app=train.sample$app, channel=train.sample$channel,ip=train.sample$ip,is_attributed=as.numeric(train.sample$is_attributed),device=train.sample$device,os=train.sample$os,click_time=as.numeric(train.sample$click_time))
+
+M<-cor(train.sample1[c(1,2,3,4,5,6,7)])
+head(round(M,2))
+library('corrplot')
+corrplot(M, method="color")
+```
+
+### Step 4: Building a series of histogram to see the number of times an ip address, app, os, device and channel v alues have been used
+```{r ch3, echo=FALSE,warning=FALSE,message=FALSE}
+library(ggplot2)
+ggplot(data = melt(train.sample[,c(1:5)]), mapping = aes(x = value)) + 
+    geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x') + ggtitle(paste("Histogram tells the ",subtitle="number of times an ip, app, os, device and channel values have been used"))
+
+```
+
+### Step 5: Coercing the dataset and making independent variables as factors
+```{r ch4, echo=FALSE,warning=FALSE,message=FALSE}
+  #Coerce the app column as Factor
+train.sample$app <- as.factor(train.sample$app)
+#Coerce the ip column as Factor
+train.sample$ip <- as.factor(train.sample$ip)
+#Coerce the device column as Factor
+train.sample$device <- as.factor(train.sample$device)
+#Coerce the os column as Factor
+train.sample$os <- as.factor(train.sample$os)
+#Coerce the channel column as Factor
+train.sample$channel <- as.factor(train.sample$channel)
+#Coerce the ip column as Factor
+train.sample$ip <- as.factor(train.sample$ip)
+str(train.sample)
+```
+
+### Step 6: Checking how many times the app has been downloaded on hourly basis
+```{r ch5, echo=FALSE,warning=FALSE,message=FALSE}
+  #Coerce the app column as Factor
+tbl <- with(train.sample, table( is_attributed,click_hour))
+
+barplot(tbl, beside = TRUE, legend = TRUE, main= "Hourly Click Frequency")
+
+```
+
+
+### Step 7: As my analysis continues, I will be building KNN and logistic regression models to find out the actual number of app downloads. 
+
+### I will also be trying other models before final selection and fitting the model into the test data.
+
+
+
+```{r ch7, echo=FALSE,warning=FALSE,message=FALSE}
+
+library('tree')
+library('rpart')
+test$is_attributed <-0
+treefit <- rpart(is_attributed~ip+app+os+device+channel+click_time, method = "class", data = train.sample)
+printcp(treefit)
+plotcp(treefit)
+summary(treefit)
+#plot(treefit, uniform=TRUE, 
+  #	main="Classification Tree for train")
+#text(treefit, use.n=TRUE, all=TRUE, cex=.8)
+test
+save.image(file="temp.RData")
+rm(list=ls())
+load(file="temp.RData")
+gc()
+plot(predict(treefit, df.test1))
+```
+
+
+```{r ch8, echo=FALSE,warning=FALSE,message=FALSE}
+logReg <- glm(is_attributed ~ app + channel + ip +device +os, family="binomial", data = train.sample)
+summary(logReg)
+plot(logReg)
+
+t6<-predict(logReg,ttdf,type="response")
+
+t7<-ifelse(t6 > 0.5,1,0)
+table(ttdf$is_attributed, t7)
+
+
+MisClasificError <- mean(t7 != ttdf$is_attributed)
+print(paste('Accuracy',1-misClasificError))
+
+
+mean((t7 - as.numeric(ttdf$is_attributed))^2) 
+u = union(t7, as.numeric(ttdf$is_attributed))
+t = table(factor(t7, u), factor(as.numeric(ttdf$is_attributed), u))
+print("Confusion Matrix for Logisitc Regression")
+library('caret')
+confusionMatrix(t)
+
+save.image(file="temp.RData")
+getwd()
+
+
+
+
+```
+
+##### ---------------------------------------------------------------------------------------------work in progress--------------------------------------------
+
+
+
+
+
+

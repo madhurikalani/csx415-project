@@ -1,7 +1,7 @@
 ---
 title: "model-performance-linear"
 author: "Madhuri Kalani"
-date: "April 24, 2018"
+date: "April 21, 2018"
 output: html_document
 ---
 
@@ -9,50 +9,51 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-#Loading the Project
+## Loading the Project
 
 ```{r p0, echo =FALSE}
 
 setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
-#load.proje(file="temp.RData")
-
+load(file="temp.RData")
+library('caret')
 
 ```
 
 ## Model Training
 
-You can also embed plots, for example:
+Using simple Logistic Regression model for Classification.
+Logistic Regression is a classification algorithm. It is used to predict a binary outcome (1 / 0, Yes / No, True / False) given a set of independent variables.
 
-```{r p1, echo=FALSE}
-#Logistic Regression Model to Classify
+I will be using GLM function for training the model.
+GLM does not assume a linear relationship between dependent and independent variables. However, it assumes a linear relationship between link function and independent variables in logit model.The dependent variable need not to be normally distributed.
+
+```{r p1}
+# Logistic Regression Model to Classify
 logReg <- glm(is_attributed ~ app + channel + ip +device +os, family="binomial", data = train.sample)
 
+# Summary of the Trained Model
 summary(logReg)
 
+# Results of Trained Model
 plot(logReg)
 
-#save.image(file="temp.RData")
 
 ```
 
 ## Fitting the Model
 ### If the predicted value is greater than 0.5 then is_attributed = 1 else 0
 
-```{r p2, echo=FALSE}
+```{r p2}
 
+# Predicting using Trained Model
 t6<-predict(logReg,ttdf,type="response")
 
+# If the predicted value is greater than 0.5 then is_attributed = 1 else 0
+
 t7<-ifelse(t6 > 0.5,1,0)
+
+# Displaying the Result
 table(ttdf$is_attributed, t7)
-
-
-#save.image(file="temp.RData")
 
 ```
 
@@ -61,17 +62,29 @@ table(ttdf$is_attributed, t7)
 ### Step 1 Checking the Accuracy
 ### Step 2 Building a Confusion Matrix
 
-```{r p3, echo=FALSE}
+It is a tabular representation of Actual vs Predicted values. This helps to find the accuracy of the model and avoid overfitting. 
+
+```{r p3}
+
+# Step 1 Checking the Accuracy
 
 MisClasificError <- mean(t7 != ttdf$is_attributed)
-print(paste('Accuracy',1-misClasificError))
 
+# Results
 
+print(paste('Accuracy in %',(1-misClasificError)*100))
+ 
+# Calculating Mean
 mean((t7 - as.numeric(ttdf$is_attributed))^2) 
-u = union(t7, as.numeric(ttdf$is_attributed))
+
+# Union Operation
+un = union(t7, as.numeric(ttdf$is_attributed))
+
+# Creating a table for Confusion Matrix
 t = table(factor(t7, u), factor(as.numeric(ttdf$is_attributed), u))
+
+# Confusion Matrix
 print("Confusion Matrix for Logisitc Regression")
-library('caret')
 confusionMatrix(t)
 
 
