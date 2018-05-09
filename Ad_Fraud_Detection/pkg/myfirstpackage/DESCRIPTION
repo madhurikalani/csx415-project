@@ -1,0 +1,10 @@
+Package: AdFraudModelPkg
+Title: Builds Models For Given Training Data
+Version: 0.1.2
+Authors@R: person("Madhuri", "kalani", email = "madhuri.kalani@gmail.com", role = c("aut", "cre"))
+Description: This package builds models for deteremining whether the user downloaded the app or not.
+Depends: R (>= 3.4.1)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: false
+RoxygenNote: 6.0.1
