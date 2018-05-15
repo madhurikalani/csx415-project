@@ -1,0 +1,142 @@
+---
+title: "project-performance"
+author: "Madhuri Kalani"
+date: "April 17, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Ad_Fraud_Clicks_Detection
+
+The objective is to predict whether a user will download an application after clicking a mobile advertisement.
+
+Looking at the data it looks like a classification problem that outputs two classes. 
+4 million rows were pulled from training data file for begining our analysis
+Each row of training data contains a click record, with the following features:
+
+1. ip: ip address of click.
+2. app: app id for marketing.
+3. device: device type id of user mobile phone (e.g., iphone 6 plus, huawei mate 7, etc.)
+4. os: os version id of user mobile phone
+5. channel: channel id of mobile ad publisher
+6. click_time: timestamp of click (UTC)
+7. attributed_time: if user download the app for after clicking an ad, this is the time of the app download  
+8. is_attributed: the target that is to be predicted, indicating the app was downloaded (1= app downloaded, 0= not downloaded)
+
+Please note that ip, app, device, os, and channel are encoded. 
+
+Feature attributed_time was discarded as had no important data.
+
+Currently, I am beginning my analysis with approx. 1 million rows of training data.
+
+
+The test data is similar, with the following
+differences:
+1. click_id: reference for making predictions
+2. is_attributed: not included
+
+### Step 1: Loading the Project and training data.
+```{r ch1, echo=FALSE, warning=FALSE,message=FALSE}
+getwd()
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+library('ProjectTemplate')
+load.project()
+
+
+```
+
+### Step 2: The training data contains 8 variables as shown above. I will be adding few more columns to the training data.
+#### Showing Structure and Summary of the training dataset
+```{r ch2, echo=FALSE,warning=FALSE,message=FALSE}
+
+str(df.train)
+## Summary
+summary(df.train)
+
+```
+
+
+### Step 3: Frequency vs Feature using histogram 
+```{r ch3, echo=FALSE,warning=FALSE,message=FALSE}
+library(ggplot2)
+ggplot(data = melt(df.train[,c(1,2,3,4,5,8)]), mapping = aes(x = value)) + 
+    geom_histogram(bins = 20) + facet_wrap(~variable, scales = 'free_x') + ggtitle(paste("Frequency vs Feature",subtitle=" : ip, app, os, device, click_hour and channel "))
+
+```
+
+
+### Step 4: Checking how many times the app has been downloaded on hourly basis
+```{r ch5, echo=FALSE,warning=FALSE,message=FALSE}
+  #Coerce the app column as Factor
+tbl <- with(df.train, table( is_attributed,click_hour))
+
+barplot(tbl, beside = TRUE, legend = TRUE, main= "Hourly Click Frequency")
+??barplot
+```
+
+### Step 5: Feature Selection
+#### 5.A Finding correlation between columns in the training data set.
+
+```{r ch6, echo=FALSE,warning=FALSE,message=FALSE}
+
+M<-cor(train.sample[1:5])
+head(round(M,2))
+library('corrplot')
+corrplot(M, method="color")
+```
+
+#### 5.B Using Random Forest
+Using Mars model
+
+
+```{r ch62, echo=FALSE,warning=FALSE,message=FALSE}
+
+library (randomForest)
+model_rf <- randomForest(is_attributed ~ app + channel + ip +device + click_time, data = df.train, ntree=100, importance = TRUE)
+model_rf
+varImpPlot(model_rf)
+```
+
+
+#### 5.C Using Mars Model
+
+
+
+```{r ch63, echo=FALSE,warning=FALSE,message=FALSE}
+library(earth)
+marsModel <- earth(is_attributed ~ app + channel + ip +device + os+ click_time, data = df.train) # build model
+ev <- evimp (marsModel) # estimate variable importance
+ev
+plot(ev)
+```
+
+#### 5.D Using Caret Package
+
+
+
+```{r ch63, echo=FALSE,warning=FALSE,message=FALSE}
+library(caret)
+control <- trainControl(method="repeatedcv", number=3, repeats=3)
+# train the model
+model <- train(as.factor(is_attributed) ~ app + channel + ip +device + os+ click_time, data = df.train, method="lvq", preProcess="scale", trControl=control)
+# estimate variable importance
+importance <- varImp(model, scale=FALSE)
+# summarize importance
+print(importance)
+# plot importance
+plot(importance)
+```
+
+
+We know now our key features to be used to train our models.
+
+##### ---------------------------------------------------------------------------------------------work in progress--------------------------------------------
+
+
+
+
+
+

@@ -1,0 +1,74 @@
+---
+title: "model-performance-linear"
+author: "Madhuri Kalani"
+date: "April 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Loading the Project
+
+```{r p0, echo =FALSE, warning=FALSE}
+
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+
+library('ProjectTemplate')
+load.project()
+
+library('caret')
+
+
+
+```
+
+## Model Training using Random forest
+
+The caret package in R provides a powerful framework for growing classification trees.
+
+```{r c1}
+
+#Tree Model to Classify - Random forest
+
+
+train_control <- trainControl(method="cv", number=3)
+
+# train the model
+
+model_rf <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="rf", trControl=train_control)
+
+
+
+# Results of Model Training
+model_rf
+
+# Plotting the Trained Model
+plot(model_rf)
+
+
+predict_rf <- predict(model_rf, df.test)
+
+# Confusion Matrix
+print("Confusion Matrix for rf")
+cm_rf <- confusionMatrix(table(as.factor(df.test$is_attributed),predict_rf))
+cm_rf
+
+# Cohen's Kappa
+print("kappa value for Random Forest")
+cm_rf$overall[2]
+
+# Accuracy
+print("Accuracy value for Random Forest")
+cm_rf$overall[1]
+
+#ROC Curve
+library(pROC)
+plot(roc(df.test$is_attributed, as.numeric(predict_rf), direction="<"),
+      col="yellow", lwd=3, main="ROC Curve for Random Forest")
+
+
+```
+

@@ -1,0 +1,78 @@
+---
+title: "model-performance-rpart"
+author: "Madhuri Kalani"
+date: "April 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Loading the Project
+
+```{r p0, echo =FALSE, warning=FALSE}
+
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+
+library('ProjectTemplate')
+load.project()
+
+library('caret')
+
+
+
+```
+
+## Model Training using rpart
+
+The caret package in R provides a powerful framework for growing classification trees.
+
+```{r c1}
+
+#Tree Model to Classify - rpart
+
+
+train_control <- trainControl(method="cv", number=3)
+model_rpart <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="rpart", trControl=train_control)
+
+# Results of Model Training
+model_rpart
+
+# Plotting the Trained Model
+plot(model_rpart)
+
+
+predict_rpart <- predict(model_rpart, df.test)
+
+# Confusion Matrix
+print("Confusion Matrix for tree: rpart")
+cm_rpart <- confusionMatrix(table(as.factor(df.test$is_attributed),predict_rpart))
+cm_rpart
+
+# Cohen's Kappa
+print("Kappa value for tree: rpart")
+cm_rpart$overall[2]
+
+# Accuracy
+print("Accuracy value for tree: rpart")
+cm_rpart$overall[1]
+
+#ROC Curve
+library(pROC)
+plot(roc(df.test$is_attributed, as.numeric(predict_rpart), direction="<"),
+      col="yellow", lwd=3, main="ROC Curve for Tree: Rpart")
+
+
+```
+
+
+## rpart function did not show the outcome as expected
+
+``` {r c2}
+
+
+
+```
+

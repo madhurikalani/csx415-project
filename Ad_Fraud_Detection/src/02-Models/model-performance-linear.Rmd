@@ -1,0 +1,102 @@
+---
+title: "model-performance-linear"
+author: "Madhuri Kalani"
+date: "April 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading the Project
+
+```{r p0, echo =FALSE}
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+
+library('ProjectTemplate')
+load.project()
+library('caret')
+
+```
+
+## Model Training
+
+Using simple Logistic Regression model for Classification.
+Logistic Regression is a classification algorithm. It is used to predict a binary outcome (1 / 0, Yes / No, True / False) given a set of independent variables.
+
+I will be using GLM function for training the model.
+GLM does not assume a linear relationship between dependent and independent variables. However, it assumes a linear relationship between link function and independent variables in logit model.The dependent variable need not to be normally distributed.
+
+```{r p1}
+# Logistic Regression Model to Classify
+model_glm <- glm(is_attributed ~ app + channel +os+ device+ip+ click_time, family="binomial", data = df.train)
+
+train_control <- trainControl(method="cv", number=3)
+
+
+
+
+
+# Summary of the Trained Model
+summary(model_glm)
+
+# Results of Trained Model
+plot(model_glm)
+
+
+```
+
+## Fitting the Model
+### If the predicted value is greater than 0.5 then is_attributed = 1 else 0
+
+```{r p2}
+
+# Predicting using Trained Model
+
+predict_logistic1<-predict(model_glm,df.test,type="response")
+
+# If the predicted value is greater than 0.5 then is_attributed = 1 else 0
+
+predict_logistic<-ifelse(predict_logistic1 > 0.5,1,0)
+
+# Displaying the Result
+table(df.test$is_attributed,predict_logistic)
+
+
+results_test <- data.table(Actual=df.test$is_attributed,Predicted=predict_logistic)
+```
+
+
+## Evaluation - Confusion Matrix
+### Step 1 Building a Confusion Matrix
+
+It is a tabular representation of Actual vs Predicted values. This helps to find the accuracy of the model and avoid overfitting. 
+
+```{r p3}
+
+# Union Operation
+un = union(predict_logistic, as.numeric(df.test$is_attributed))
+
+# Creating a table for Confusion Matrix
+t = table(factor(predict_logistic, un), factor(as.factor(df.test$is_attributed), un))
+t
+# Confusion Matrix
+print("Confusion Matrix for Logisitc Regression")
+cm_logistic<-confusionMatrix(t)
+cm_logistic
+# Cohen's Kappa
+print("kappa value for Logisitc Regression")
+cm_logistic$overall[2]
+
+# Accuracy
+print("Accuracy value for Logistic Regression")
+cm_logistic$overall[1]
+
+#ROC Curve
+library(pROC)
+plot(roc(df.test$is_attributed, predict_logistic1, direction="<"),
+      col="yellow", lwd=3, main="ROC Curve for Logistic Regression Model")
+#
+
+```

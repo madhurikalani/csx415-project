@@ -1,0 +1,67 @@
+---
+title: "project-model-evaluation"
+author: "Madhuri Kalani"
+date: "May 15, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading the Project
+
+```{r p0, echo =FALSE, warning=FALSE}
+
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+
+library('ProjectTemplate')
+load.project()
+
+library('caret')
+
+
+```
+
+## Training Model using Caret
+# Logistic regression
+# SVM Radial
+# Random Forest
+# Tree Rpart
+# Stochastic Gradient Boosting (Generalized Boosted Modeling)
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+
+
+train_control <- trainControl(method="cv", number=3)
+
+#01
+model_glm <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="glm", trControl=train_control)
+
+# 02
+model_svm <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="svmRadial", preProc=c("center", "scale"), trControl=train_control, fit=FALSE)
+
+#03
+model_rf <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="rf", trControl=train_control)
+
+#04
+model_rpart <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="rpart", trControl=train_control)
+
+#05
+model_gbm <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="gbm", trControl=train_control, verbose=FALSE)
+
+
+# Combining Results
+
+results <- resamples(list(Logistic=model_glm,SVM=model_svm,Rpart=model_rpart,RandomForest=model_rf,GBM=model_gbm))
+
+# summarize Results and Table comparison
+summary(results)
+
+#Top Performing Models
+bwplot(results)
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
