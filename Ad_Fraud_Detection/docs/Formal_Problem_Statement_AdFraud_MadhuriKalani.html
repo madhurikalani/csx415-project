@@ -126,42 +126,32 @@ $(document).ready(function () {
 
 <div id="table-of-contents" class="section level2">
 <h2>Table of Contents</h2>
-<p>1 Business Problem Statement</p>
-<p>2 Project Objectives</p>
-<p>3 Stakeholders</p>
-<p>4 Business Value - Benefits of the project</p>
-<p>5 Non-quantifiable benefits associated with project</p>
-<p>6 Success Criteria - Determining the project’s success?</p>
-<p>7 Success Metric</p>
-<p>8 Impacted Areas</p>
-<p>9 Key Dependencies</p>
-<p>10 Project Risks and Mitigation Strategies</p>
-<p>11 If the success metric is not met</p>
-<p>12 If the model performance metric is not met</p>
-<p>13 Users of the model are and how the model will be used</p>
-<p>14 Changes that have to happen within the organization to deploy the model</p>
-<p>15 Risks to model deployment</p>
-<p>16 Schedule / Milestones- Timeline for delivery of the project</p>
-<p>17 Timeline to measure preliminary results of model/analysis performance</p>
-<p>18 Determining whether the model performance is good or bad</p>
-<p>19 Time required to deploy the solutions</p>
-<p>20 Project Communication Plan</p>
+<ol style="list-style-type: decimal">
+<li><p>Business Problem Statement</p></li>
+<li><p>Project Objectives</p></li>
+<li><p>Stakeholders</p></li>
+<li><p>Business Value - Benefits</p></li>
+<li><p>Success Criteria and Metrics</p></li>
+<li><p>Project Risks and Mitigation Strategies</p></li>
+<li><p>Risks to Model Deployment</p></li>
+<li><p>Schedule / Milestones- Timeline for Delivery</p></li>
+<li><p>Project Communication Plan</p></li>
+</ol>
 </div>
 <div id="business-problem-statement" class="section level2">
-<h2>1 Business Problem Statement</h2>
-<p>Advertisement click fraud is very common among companies who want to direct traffic to their websites or mobile apps. Most companies pay advertisers on per click basis which can be a costly affair in a situation where it is difficult to distinguish between legitimate clicks from fraudalent ones. Companies have deviced an approach to block IP addresses which produce lot of clicks but never end up installing apps. However, if we build a model we can predict whether a user will actually download an app after clicking any adverstisement or not.</p>
+<h2>Business Problem Statement</h2>
+<p>Advertisement click fraud is very common among companies who want to direct traffic to their websites or mobile apps. Most companies pay advertisers on per click basis which can be a costly affair in a situation where it is difficult to distinguish between legitimate clicks from fraudalent ones. Companies have deviced an approach to block IP addresses which produce lot of clicks but that was not sufficient to solve this problem. However, if we build a model we can predict whether a user will actually download an app after clicking any adverstisement or not.</p>
 <p>In this project, TData (big data services provider) covers 70% of active mobile devices and handles 3 billion ad-clicks per day, of which over 90% are fraudulent. The team would now like to build a model which will help them to predict whether the user will download the app or not.</p>
 </div>
 <div id="project-objectives" class="section level2">
-<h2>2 Project Objectives</h2>
+<h2>Project Objectives</h2>
 <ol style="list-style-type: decimal">
-<li><p>Build a model to predict whether the user will download the mobile ap after clicking the advertisement. The company has provided a generous dataset covering 200 million lcicks in 4 days.</p></li>
-<li><p>Mr. Mazel wants to ensure that $1 million digital budget spent to direct traffic to the mobile app is worth it or the budget requires a revision.</p></li>
-<li><p>Map legitimate mobile downloads vs fraudlent.</p></li>
+<li><p>Build a model to predict whether the user will download the mobile app after clicking the advertisement. The company has provided a generous dataset covering 200 million clicks in 4 days. The dataset is quite huge i.e. ~8 GB and 200 million records (train + test) and fits the definition of rare events data where 99.8% records are negative and only 0.2% records are positive. The dataset is interesting and unique because of rare events data/ highly unbalanced classes.</p></li>
+<li><p>The main tasks would be data processing, feature selection, data analysis, model training and selection, model evaluation and predictions.</p></li>
 </ol>
 </div>
 <div id="stakeholders" class="section level2">
-<h2>3 Stakeholders</h2>
+<h2>Stakeholders</h2>
 <table>
 <thead>
 <tr class="header">
@@ -172,203 +162,61 @@ $(document).ready(function () {
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">Mr. Mazel</td>
+<td align="left">Dean Mazel</td>
 <td align="left">Vice President /Sponsor (End User)</td>
-<td align="left">He is the Business Unit Head at TData.</td>
+<td align="left">He is the marketing head at TData and has given approval for this project</td>
 </tr>
 <tr class="even">
-<td align="left">Ms. Jenny</td>
+<td align="left">Jenny Parker</td>
 <td align="left">Marketing Project Manager</td>
-<td align="left">Project Manager and Head of the Marketing team. She will work closely with Analytics manager of model development team or data science team.She will track the ongoing project, and ensure proposed project aligns with strategic performance.</td>
+<td align="left">She is the Project Manager and will work closely with Analytics manager of data science team.She will track the timelines of the ongoing project, and ensure that the proposed project aligns with objectives.</td>
 </tr>
 <tr class="odd">
-<td align="left">Mr. Hiabc</td>
+<td align="left">Hiabc Jones</td>
 <td align="left">Analytics Manager</td>
-<td align="left">He will be managing resources and funding of the project. His role will also inlcude estimating benefits, identifying deployment end points and business risks.</td>
+<td align="left">He will be managing resources and funding of the project. His role will also include reporting to the project manager and marketing head</td>
 </tr>
 <tr class="even">
-<td align="left">Ms. Kalani and Mr. Wright</td>
-<td align="left">Model Development team</td>
-<td align="left">They will test and build the models, create necessary documentation for future use, evaluate the model performance and will be maintaining it.</td>
+<td align="left">Madhuri Kalani</td>
+<td align="left">Data Scientist</td>
+<td align="left">She will analyze the data, build the model, will evaluate the performance of the model and create necessary documentation for future use</td>
 </tr>
 <tr class="odd">
-<td align="left">Mr. Rick</td>
-<td align="left">Model Deployment Team</td>
-<td align="left">With the help of feature specification and model spec. documents, he will lead the deployment of the model. He will inspect and perform final deployment process with his team.</td>
+<td align="left">Nick Thompson and Richard Wright</td>
+<td align="left">SME and Lead</td>
+<td align="left">Being subject matter experts, they will identifying deployment end points, business risks. With the help of feature specification and model spec. documents, they will lead the deployment of the model.</td>
 </tr>
 </tbody>
 </table>
 </div>
 <div id="business-value---benefits" class="section level2">
-<h2>4 Business Value - Benefits</h2>
+<h2>Business Value - Benefits</h2>
 <ol style="list-style-type: decimal">
-<li><p>The end result is no artificial boost of campaign metrics.</p></li>
-<li><p>No waste in advertising budgets.</p></li>
-<li><p>Business users will gain visibility on ad-traffic.</p></li>
-<li><p>Marketing team can track ad-frauds and respond.</p></li>
-<li><p>Process will be streamlined to build reports for marketing head.</p></li>
+<li><p>Dean Mazel and his team will gain visibility on ad-traffic fraud.</p></li>
+<li><p>Marketing team can track ad-frauds and block ip,device, users corresponding to negative event with a opportunity of reducing ad-fraud by a minimum of 60%.</p></li>
+<li><p>Company’s annual spend of $10M on handling user clicks will not go to waste.</p></li>
+<li><p>Team will have a better understanding on attributes contributing to ad-fraud and will able to prevent the risks involved with it. However, the data science team will have to keeping evaluating the performance of the model from time to time to avoid any chance of fraudulent in the ad world.</p></li>
 </ol>
 </div>
-<div id="non-quantifiable-benefits-associated-with-the-project" class="section level2">
-<h2>5 Non-quantifiable Benefits associated with the Project</h2>
-<p>Since a model will be build to detect ad-fraud, the team will have clear visibility on the data and will be able to detect fraud in the future by seeing reports.</p>
-<p>They will not have to go through all the campaigns to detect suspicious activity.</p>
-</div>
-<div id="success-criteria" class="section level2">
-<h2>6 Success Criteria</h2>
+<div id="success-criteria-and-metrics" class="section level2">
+<h2>Success Criteria and Metrics</h2>
+<p>The evaluation of the the model affects the time and money spend on handling user clicks and negative predictions add ons to the cost. If the model identifies a false download even when the user actually downloaded the app, it will add on to the number of fradulent users. But if it predicts positive values even when user did not download the app, the cost is increased to handle such event.</p>
 <ol style="list-style-type: decimal">
-<li><p>The success criteria for this project are if we are able to solve all the problems of this project.</p></li>
-<li><p>We are able to complete the project before 20th June and keep it under budget of $10M.</p></li>
-<li><p>Also, Mr.Mazel is happy to see users actually downloading the apps through reports.</p></li>
+<li><p>Team is able to channelize the annual $10M spend on handling user clicks with ad-fraudulent to be reduced by 60%. If these outcomes are not met, company will loose it’s mobile users and partners who invest millions in advertising their mobile ads. We should also take care of the cost involved in building a model and maintaining it. proper methods should be used to evaluate the actual savings.</p></li>
+<li><p>Data Science team is able to train the model that performs the best and predicts the two classes which depicts user clicks. They measure accuracy and kappa values to select a model best suited for this classification model. Provide evaluation results which include confusion matrix, ROC curve needs to be consistent over time.</p></li>
 </ol>
-</div>
-<div id="success-metric" class="section level2">
-<h2>7 Success Metric</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Deliverables</th>
-<th align="left">Expected_Result</th>
-<th align="left">SuccessOrFailure</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">% decrease in Ad fraud traffic</td>
-<td align="left">50-70%</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="even">
-<td align="left">% increase in users actually downloading the mobile app</td>
-<td align="left">50-80%</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="odd">
-<td align="left">Requirements are understood by the model development team</td>
-<td align="left">-</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="even">
-<td align="left">Appropriate models are suggested by the team</td>
-<td align="left">-</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="odd">
-<td align="left">Model is well executed and performing as required</td>
-<td align="left">-</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="even">
-<td align="left">A/B test are performed before deployment</td>
-<td align="left">-</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="odd">
-<td align="left">Deployment team understands the requirements</td>
-<td align="left">-</td>
-<td align="left">Unknown</td>
-</tr>
-<tr class="even">
-<td align="left">Code is well deployed</td>
-<td align="left">-</td>
-<td align="left">Unknown</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="key-dependencies" class="section level2">
-<h2>8 Key Dependencies</h2>
-<ol style="list-style-type: decimal">
-<li><p>Availability of dataset required to build a model</p></li>
-<li><p>Availability of Model Developers listed for this project</p></li>
-<li><p>Availability of Control-M team to schedule a job</p></li>
-<li><p>Avallability of Application development team</p></li>
-<li><p>Availability of respective managers for approvals required through the project</p></li>
-<li><p>Availability Deployment team to deploy the solution</p></li>
-</ol>
-</div>
-<div id="impacted-areas" class="section level2">
-<h2>9 Impacted Areas</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">S_no</th>
-<th align="left">Communication_Plan</th>
-<th align="left">Risk_Involved</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">1</td>
-<td align="left">Appoint special skilled team to handle this project</td>
-<td align="left">High</td>
-</tr>
-<tr class="even">
-<td align="left">2</td>
-<td align="left">It may affect other project timelines and bandwidth of resources</td>
-<td align="left">Medium</td>
-</tr>
-<tr class="odd">
-<td align="left">3</td>
-<td align="left">You will not be able to see immediate results</td>
-<td align="left">Medium</td>
-</tr>
-<tr class="even">
-<td align="left">4</td>
-<td align="left">Reports will not be ready for review anytime sooner</td>
-<td align="left">Medium</td>
-</tr>
-<tr class="odd">
-<td align="left">5</td>
-<td align="left">Build new application and control M jobs to pull ad-campaigns data</td>
-<td align="left">Low</td>
-</tr>
-</tbody>
-</table>
 </div>
 <div id="project-risks-and-mitigation-strategies" class="section level2">
-<h2>10 Project Risks and Mitigation Strategies</h2>
+<h2>Project Risks and Mitigation Strategies</h2>
 <ol style="list-style-type: decimal">
-<li>$10M digital ad spending is at risk as there are no technical suggestions/solution formulated on how the problem will be solved.</li>
-<li>Additional cost of resources, time and technology.</li>
-<li>Build a new application to support the model build by team, it will require a series of approval from the higher management and thus will add to lead time.</li>
-<li>Involvement of Control-M team to setup an automated job of implementing model.</li>
-<li>Involvement of sftp team so as to setup a connection between marketing team to pull the files from their system</li>
-</ol>
-</div>
-<div id="if-the-success-metric-is-not-met" class="section level2">
-<h2>11 If the success metric is not met</h2>
-<p>Since a huge budget is involved in digital advertising, the team will perform tests on the development and sandbox server before pushing the code in production.</p>
-<p>If still the team notices suspicious activity, they will either rollback the code or determine the cause and fix it by applying a patch.</p>
-</div>
-<div id="if-the-model-performance-metric-is-not-met" class="section level2">
-<h2>12 If the model performance metric is not met</h2>
-<ol style="list-style-type: decimal">
-<li><p>Team will work on improving the performance of the model or build a new model.</p></li>
-<li><p>Code will be rolled back until a new patch is implemented if not the work load of Dev-ops team will increase so as to manage the job failure.</p></li>
-<li><p>Analytics Manger will track the work, performance and deliverables.</p></li>
-<li><p>He will also work on the areas which need improvement and lessons learned.</p></li>
-</ol>
-</div>
-<div id="users-of-the-model-are-and-how-the-model-will-be-used" class="section level2">
-<h2>13 Users of the model are and how the model will be used</h2>
-<p>The model will be used by data science/Model Development team and marketing team. They will be working closely to detect the ad fraud taking place with the past ad-campaigns before the marketing team starts to create campaigns for mobile apps</p>
-<p>Using this model, the team can track user profiles and activity.</p>
-<p>Whether the user is human or non-human (bot)</p>
-<p>Point out from reports those IP addresses and devices which are creating multiple fake download/clicks.</p>
-</div>
-<div id="changes-that-have-to-happen-within-the-organization-to-deploy-the-model" class="section level2">
-<h2>14 Changes that have to happen within the organization to deploy the model</h2>
-<ol style="list-style-type: decimal">
-<li><p>There will be no structural changes within the organization.</p></li>
-<li><p>There will be some technical additions to the system such as building a new application to support the project and model development by team.</p></li>
-<li><p>Since we are just building reports for Mr. Mazel to track results of ad-fraud, no additional infrastructure will be required.</p></li>
-<li><p>Mr. Mazel is going to hire a couple of experts to help him make strategic decisions.</p></li>
+<li>If the success metrics is not met, the annual spend of $10M digital ad spending is at risk. The company will continue loosing money to ad-fradulent until a solution/ model strong enough to identify actual user clicks is being implemented.</li>
+<li>Additional cost of resources, time and technology used thus far to formulate a solution.</li>
+<li>In the model performance is poor, the team will continue working on ways to improve the performance ie. getting more data, adding new features or training the data with a different model.</li>
 </ol>
 </div>
 <div id="risks-to-model-deployment" class="section level2">
-<h2>15 Risks to model deployment</h2>
-<p>The risks involved with Model development could be:</p>
+<h2>Risks to Model Deployment</h2>
+<p>The risks involved with model development could be:</p>
 <ol style="list-style-type: decimal">
 <li>Difficulty to scale up the model with large datasets</li>
 <li>Issue with calibrating the model</li>
@@ -377,36 +225,20 @@ $(document).ready(function () {
 </ol>
 </div>
 <div id="schedule-milestones--timeline-for-delivery-of-the-project" class="section level2">
-<h2>16 Schedule / Milestones- Timeline for delivery of the project</h2>
+<h2>Schedule / Milestones- Timeline for delivery of the project</h2>
 <p>The project involves 6 phases which are:</p>
 <ol style="list-style-type: decimal">
 <li><p>Inception - March 27th to April 1st, 2018</p></li>
 <li><p>Formalization - April 2nd to April 10th, 2018</p></li>
-<li><p>Model Development - April 10th to May 25th, 2018</p></li>
-<li><p>Model Deployment - May 26th to May 29th, 2018</p></li>
-<li><p>Model Management - May 30th to June 7th, 2018</p></li>
-<li><p>Evaluating Results - June 8th to June 11th, 2018</p></li>
-<li><p>Building Reports - June 12th to June 14th, 2018</p></li>
+<li><p>Model Development - April 10th to May 12th, 2018</p></li>
+<li><p>Evaluating Results - May 13th to May 20th, 2018</p></li>
+<li><p>Model Deployment - May 21st to May 22nd, 2018</p></li>
+<li><p>Model Management - May 23rd to May 28th, 2018</p></li>
+<li><p>Building Reports - May 29th to May 30th, 2018</p></li>
 </ol>
 </div>
-<div id="timeline-to-measure-preliminary-results-of-modelanalysis-performance" class="section level2">
-<h2>17 Timeline to measure preliminary results of model/analysis performance</h2>
-<p>The team will start evaluating the model performance a week after deployment.</p>
-<p>It will take a week as the team has to support and manage the model to make sure there is no system failure and that the job runs successfully.</p>
-<p>After doing that, they will start building reports and evaluating the results of the model which is in the second week after model deployment.</p>
-</div>
-<div id="determining-whether-the-model-performance-is-good-or-bad" class="section level2">
-<h2>18 Determining whether the model performance is good or bad</h2>
-<p>The results and reports build by the team will help to detemine whether the model is performing well or not.</p>
-</div>
-<div id="time-required-to-deploy-the-solutions" class="section level2">
-<h2>19 Time required to deploy the solutions</h2>
-<p>Usually it will take upto 8-12 hours. Depending upon the availability of Deployment team, the solution will either be deployed in batches or in one go.</p>
-<p>Sometimes, it takes more than you expected due to pending approvals or issue with the scripts or application.</p>
-<p>It is always advisable to keep a window of 2-3 days for the deployment team to deploy the solution.</p>
-</div>
 <div id="project-communication-plan" class="section level2">
-<h2>20 Project Communication Plan</h2>
+<h2>Project Communication Plan</h2>
 <table>
 <thead>
 <tr class="header">
@@ -417,7 +249,7 @@ $(document).ready(function () {
 <tbody>
 <tr class="odd">
 <td align="left">Stakeholder Updates</td>
-<td align="left">Bi-weekly updates given by Ms. Jenny via tele-conference meeting</td>
+<td align="left">Bi-weekly updates given by Jenny via tele-conference meeting</td>
 </tr>
 <tr class="even">
 <td align="left">Project Manger Updates</td>

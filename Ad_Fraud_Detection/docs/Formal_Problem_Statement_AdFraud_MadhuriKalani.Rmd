@@ -11,78 +11,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Table of Contents
 
-1	Business Problem Statement
+1.	Business Problem Statement
 
-2	Project Objectives
+2.	Project Objectives
 
-3 Stakeholders
+3.  Stakeholders
 
-4	Business Value - Benefits of the project
+4.	Business Value - Benefits 
 
-5	Non-quantifiable benefits associated with project	
+5.	Success Criteria and Metrics	
 
-6	Success Criteria - Determining the project's success?	
+6.	Project Risks and Mitigation Strategies
 
-7	Success Metric	
+7.  Risks to Model Deployment
 
-8	Impacted Areas	
+8.  Schedule / Milestones- Timeline for Delivery 
 
-9	Key Dependencies	
-
-10 Project Risks and Mitigation Strategies
-
-11 If the success metric is not met
-
-12 If the model performance metric is not met
-
-13 Users of the model are and how the model will be used
-
-14 Changes that have to happen within the organization to deploy the model
-
-15 Risks to model deployment
-
-16 Schedule / Milestones- Timeline for delivery of the project
-
-17 Timeline to measure preliminary results of model/analysis performance
-
-18 Determining whether the model performance is good or bad
-
-19 Time required to deploy the solutions
-
-20 Project Communication Plan
+9.  Project Communication Plan
 
 
-## 1	Business Problem Statement
+## Business Problem Statement
 
-Advertisement click fraud is very common among companies who want to direct traffic to their websites or mobile apps. Most companies pay advertisers on per click basis which can be a costly affair in a situation where it is difficult to distinguish between legitimate clicks from fraudalent ones. Companies have deviced an approach to block IP addresses which produce lot of clicks but never end up installing apps.
+Advertisement click fraud is very common among companies who want to direct traffic to their websites or mobile apps. Most companies pay advertisers on per click basis which can be a costly affair in a situation where it is difficult to distinguish between legitimate clicks from fraudalent ones. Companies have deviced an approach to block IP addresses which produce lot of clicks but that was not sufficient to solve this problem.
 However, if we build a model we can predict whether a user will actually download an app after clicking any adverstisement or not.
 
 In this project, TData (big data services provider) covers 70% of active mobile devices and handles 3 billion ad-clicks per day, of which over 90% are fraudulent. The team would now like to build a model which will help them to predict whether the user will download the app or not. 
 
-## 2	Project Objectives
+## Project Objectives
 
-1.	Build a model to predict whether the user will download the mobile ap after clicking the advertisement. The company has provided a generous dataset covering 200 million lcicks in 4 days.
+1.	Build a model to predict whether the user will download the mobile app after clicking the advertisement. The company has provided a generous dataset covering 200 million clicks in 4 days. The dataset is quite huge i.e. ~8 GB and 200 million records (train + test) and fits the definition of rare events data where 99.8% records are negative and only 0.2% records are positive. The dataset is interesting and unique because of rare events data/ highly unbalanced classes.
  
-2.	Mr. Mazel wants to ensure that $1 million digital budget spent to direct traffic to the mobile app is worth it or the budget requires a revision.
-
-3.	Map legitimate mobile downloads vs fraudlent.
+2. The main tasks would be data processing, feature selection, data analysis, model training and selection, model evaluation and predictions.	
 
 
-## 3	Stakeholders
+## Stakeholders
 
 
 ```{r, echo=FALSE, results='asis'}
 
 text_tbl <- data.frame(
-  Stakeholder = c("Mr. Mazel", "Ms. Jenny", "Mr. Hiabc","Ms. Kalani and Mr. Wright","Mr. Rick"),
+  Stakeholder = c("Dean Mazel", "Jenny Parker", "Hiabc Jones","Madhuri Kalani","Nick Thompson and  Richard Wright"),
   Department = c( "Vice President /Sponsor (End User)",
     "Marketing Project Manager ",
     "Analytics Manager ", 
-    "Model Development team"
- ,"Model Deployment Team" ),
+    "Data Scientist"
+ ,"SME and Lead" ),
   Role = c(
-    "He is the Business Unit Head at TData.",
-    "Project Manager and Head of the Marketing team. She will work closely with Analytics manager of model development team or data science team.She will track the ongoing project, and ensure proposed project aligns with strategic performance.", "He will be managing resources and funding of the project. His role will also inlcude estimating benefits, identifying deployment end points and business risks. ", "They will test and build the models, create necessary documentation for future use, evaluate the model performance and will be maintaining it.","With the help of feature specification and model spec. documents, he will lead the deployment of the model. He will inspect and perform final deployment process with his team."
+    "He is the marketing head at TData and has given approval for this project",
+    "She is the Project Manager and will work closely with Analytics manager of data science team.She will track the timelines of the ongoing project, and ensure that the proposed project aligns with objectives.", "He will be managing resources and funding of the project. His role will also include reporting to the project manager and marketing head", "She will analyze the data, build the model, will evaluate the performance of the model and create necessary documentation for future use"," Being subject matter experts, they will identifying deployment end points, business risks. With the help of feature specification and model spec. documents, they will lead the deployment of the model."
   )
 )
 knitr::kable(text_tbl, longtable = TRUE)
@@ -95,140 +71,36 @@ knitr::kable(text_tbl, longtable = TRUE)
 
 
 
-## 4	Business Value - Benefits 
+## Business Value - Benefits 
 
-1.	The end result is no artificial boost of campaign metrics.
+1.	Dean Mazel and his team will gain visibility on ad-traffic fraud.
 
-2.	No waste in advertising budgets.
+2.	Marketing team can track ad-frauds and block ip,device, users corresponding to negative event with a opportunity of reducing ad-fraud by a minimum of 60%.
 
-3.	Business users will gain visibility on ad-traffic.
+3. Company's annual spend of $10M on handling user clicks will not go to waste.
 
-4.	Marketing team can track ad-frauds and respond.
-
-5.	Process will be streamlined to build reports for marketing head.
+4. Team will have a better understanding on attributes contributing to ad-fraud and will able to prevent the risks involved with it. However, the data science team will have to keeping evaluating the performance of the model from time to time to avoid any chance of fraudulent in the ad world.
 
 
-## 5	Non-quantifiable Benefits associated with the Project
+## Success Criteria and Metrics 
 
-Since a model will be build to detect ad-fraud, the team will have clear visibility on the data and will be able to detect fraud in the future by seeing reports.
+The evaluation of the the model affects the time and money spend on handling user clicks and negative predictions add ons to the cost. If the model identifies a false download even when the user actually downloaded the app, it will add on to the number of fradulent users. But if it predicts positive values even when user did not download the app, the cost is increased to handle such event.
 
-They will not have to go through all the campaigns to detect suspicious activity.
+1.	Team is able to channelize the annual $10M spend on handling user clicks with ad-fraudulent to be reduced by 60%. If these outcomes are not met, company will loose it's mobile users and partners who invest millions in advertising their mobile ads. We should also take care of the cost involved in building a model and maintaining it. proper methods should be used to evaluate the actual savings.
 
-
-## 6	Success Criteria 
-
-1.	The success criteria for this project are if we are able to solve all the problems of this project. 
-
-2.	We are able to complete the project before 20th June and keep it under budget of $10M. 
-
-3.	Also, Mr.Mazel is happy to see users actually downloading the apps through reports.
+2.	Data Science team is able to train the model that performs the best and predicts the two classes which depicts user clicks. They  measure accuracy and kappa values to select a model best suited for this classification model. Provide evaluation results which include confusion matrix, ROC curve needs to be consistent over time. 
 
 
-## 7	Success Metric
+## Project Risks and Mitigation Strategies
+
+1.	If the success metrics is not met, the annual spend of $10M digital ad spending is at risk. The company will continue loosing money to ad-fradulent until a solution/ model strong enough to identify actual user clicks is being implemented.
+2.	Additional cost of resources, time and technology used thus far to formulate a solution.
+3.	In the model performance is poor, the team will continue working on ways to improve the performance ie. getting more data, adding new features or training the data with a different model.
 
 
+## Risks to Model Deployment
 
-```{r two, echo=FALSE, results='asis'}
-
-
-text_tbl1 <- data.frame(
-  Deliverables = c("% decrease in Ad fraud traffic", "% increase in users actually downloading the mobile app", "Requirements are understood by the model development team","Appropriate models are suggested by the team","Model is well executed and performing as required","A/B test are performed before deployment","Deployment team understands the requirements","Code is well deployed"),
-  Expected_Result = c( "50-70%","50-80% ","- ", "- ","- ","- ","- ","- "),
-  SuccessOrFailure = c(
-    "Unknown ","Unknown ","Unknown ","Unknown ","Unknown ","Unknown ","Unknown ","Unknown ")
-)
-knitr::kable(text_tbl1, longtable = TRUE)
-
- # knitr::kable_styling(full_width = F) %>%
-#  column_spec(1, bold = T, border_right = T) %>%
- # column_spec(2, width = "30em", background = "yellow")
-
-```
-
-## 8 Key Dependencies
-
-1.	Availability of dataset required to build a model
-
-2.	Availability of Model Developers listed for this project
-
-3.	Availability of Control-M team to schedule a job
-
-4.	Avallability of Application development team 
-
-5.	Availability of respective managers for approvals required through the project
-
-6.	Availability Deployment team to deploy the solution
-
-## 9 Impacted Areas
-
-
-```{r four, echo=FALSE, results='asis'}
-
-
-text_tbl3 <- data.frame(
-  S_no = c("1", "2", "3","4","5"),
-  Communication_Plan = c( "Appoint special skilled team to handle this project","It may affect other project timelines and bandwidth of resources","You will not be able to see immediate results ", "Reports will not be ready for review anytime sooner","Build new application and control M jobs to pull ad-campaigns data"),
-  Risk_Involved = c("High","Medium","Medium","Medium","Low")
-)
-knitr::kable(text_tbl3, longtable = TRUE)
-
- # knitr::kable_styling(full_width = F) %>%
-#  column_spec(1, bold = T, border_right = T) %>%
- # column_spec(2, width = "30em", background = "yellow")
-
-```
-
-## 10	Project Risks and Mitigation Strategies
-
-1.	$10M digital ad spending is at risk as there are no technical suggestions/solution formulated on how the problem will be solved.
-2.	Additional cost of resources, time and technology.
-3.	Build a new application to support the model build by team, it will require a series of approval from the higher management and thus will add to lead time.
-4.	Involvement of Control-M team  to setup an automated job of implementing model.
-5.	Involvement of sftp team so as to setup a connection between marketing team to pull the files from their system
-
-
-## 11	If the success metric is not met
-
-Since a huge budget is involved in digital advertising, the team will perform tests on the development and sandbox server before pushing the code in production. 
-
-If still the team notices suspicious activity, they will either rollback the code or determine the cause and fix it by applying a patch.
-
-## 12	If the model performance metric is not met
-
-1.	Team will work on improving the performance of the model or build a new model. 
-
-2.	Code will be rolled back until a new patch is implemented if not the work load of Dev-ops team will increase so as to manage the job failure.
-
-3.	Analytics Manger will track the work, performance and deliverables.
-
-4.	He will also work on the areas which need improvement and lessons learned.
-
-
-## 13	Users of the model are and how the model will be used
-
-The model will be used by data science/Model Development team and marketing team. 
-They will be working closely to detect the ad fraud taking place with the past ad-campaigns before the marketing team starts to create campaigns for mobile apps
-
-Using this model, the team can track user profiles and activity.
-
-Whether the user is human or non-human (bot)
-
-Point out from reports those IP addresses and devices which are creating multiple fake download/clicks.
-
-## 14	Changes that have to happen within the organization to deploy the model
-
-1.	There will be no structural changes within the organization.
-
-2.	There will be some technical additions to the system such as building a new application to support the project and model development by team.
-
-3.	Since we are just building reports for Mr. Mazel to track results of ad-fraud, no additional infrastructure will be required.
-
-4.	Mr. Mazel is going to hire a couple of experts to help him make strategic decisions.
-
-
-## 15	Risks to model deployment
-
-The risks involved with Model development could be:
+The risks involved with model development could be:
 
 1.	Difficulty to scale up the model with large datasets
 2.	Issue with calibrating the model
@@ -236,7 +108,7 @@ The risks involved with Model development could be:
 4.	Picking up a wrong model for this project implementation
 
 
-##16	Schedule / Milestones- Timeline for delivery of the project
+## Schedule / Milestones- Timeline for delivery of the project
 
 The project involves 6 phases which are:
 
@@ -244,41 +116,17 @@ The project involves 6 phases which are:
 
 2.	Formalization - April 2nd to April 10th, 2018 
 
-3.	Model Development - April 10th to May 25th, 2018 
+3.	Model Development - April 10th to May 12th, 2018 
 
-4.	Model Deployment - May 26th to May 29th, 2018
+4.	Evaluating Results - May 13th to May 20th, 2018
 
-5.	Model Management - May 30th to June 7th, 2018
+5.	Model Deployment -  May 21st to May 22nd, 2018
 
-6.	Evaluating Results - June 8th to June 11th, 2018 
+6.	Model Management - May 23rd to May 28th, 2018
 
-7.	Building Reports - June 12th to June 14th, 2018 
+7.	Building Reports - May 29th to May 30th, 2018 
 
-## 17	Timeline to measure preliminary results of model/analysis performance
-
-The team will start evaluating the model performance a week after deployment. 
-
-It will take a week as the team has to support and manage the model to make sure there is no system failure and that the job runs successfully.
-
-After doing that, they will start building reports and evaluating the results of the model which is in the second week after model deployment.
-
-
-## 18	Determining whether the model performance is good or bad
-
-The results and reports build by the team will help to detemine whether the model is performing well or not.
-
-## 19	Time required to deploy the solutions
-
-Usually it will take upto 8-12 hours. Depending upon the availability of Deployment team, the solution will either be deployed in batches or in one go.
-
-Sometimes, it takes more than you expected due to pending approvals or issue with the scripts or application.
-
-It is always advisable to keep a window of 2-3 days for the deployment team to deploy the solution.
-
-
-## 20 Project Communication Plan
-
-
+## Project Communication Plan
 
 
 ```{r three, echo=FALSE, results='asis'}
@@ -286,7 +134,7 @@ It is always advisable to keep a window of 2-3 days for the deployment team to d
 
 text_tbl2 <- data.frame(
   Focus_Area = c("Stakeholder Updates", "Project Manger Updates", "Team Progress/Reports","Communication Plan","Deployment Team Update"),
-  Communication_Plan = c( "Bi-weekly updates given by Ms. Jenny via tele-conference meeting","Updates meeting every week (Tuesday)","Meeting every evening to discuss the updates and any hurdles associated with the project conducted by Analytics Manger for the model development team ", "Regular meeting on these above mentioned days. Meeting will be conducted in meeting rooms, please book in advance and if none available it will be conducted near manager's desk. Development team can also discuss problems over Slack project group or email","Deployment team to be notified a month in advance about upcoming deployment or atleast two weeks before the deployment")
+  Communication_Plan = c( "Bi-weekly updates given by Jenny via tele-conference meeting","Updates meeting every week (Tuesday)","Meeting every evening to discuss the updates and any hurdles associated with the project conducted by Analytics Manger for the model development team ", "Regular meeting on these above mentioned days. Meeting will be conducted in meeting rooms, please book in advance and if none available it will be conducted near manager's desk. Development team can also discuss problems over Slack project group or email","Deployment team to be notified a month in advance about upcoming deployment or atleast two weeks before the deployment")
 )
 knitr::kable(text_tbl2, longtable = TRUE)
 
