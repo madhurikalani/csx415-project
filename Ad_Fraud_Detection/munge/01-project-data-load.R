@@ -1,3 +1,5 @@
+#Setting the working directory
+
 setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
 
