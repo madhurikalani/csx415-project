@@ -1,5 +1,5 @@
 ---
-title: "model-performance-linear"
+title: "model-performance-svm"
 author: "Madhuri Kalani"
 date: "April 21, 2018"
 output: html_document
@@ -9,10 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-
 ## Loading the Project
 
-```{r p0, echo =FALSE, warning=FALSE}
+The first step of model training is to load the project. It includes installing all the necessary libraries and data munging to prepare the training and test data sets, doing exploratory data analysis to study the data and feature selection.
+
+```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
 
 setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
@@ -29,7 +30,7 @@ library('caret')
 
 The caret package in R provides a powerful framework for classification.
 
-```{r c1}
+```{r c1, warning = FALSE}
 
 #Tree Model to Classify - SVM
 
@@ -40,31 +41,57 @@ train_control <- trainControl(method="cv", number=3)
 
 model_svm <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="rf", trControl=train_control)
 
-
+```
+### Summary of Trained SVM Model
+```{r p10,echo =FALSE , warning=FALSE}
 
 # Results of Model Training
 model_svm
+```
 
+### Plotting the Trained Model
+
+```{r p11,echo =FALSE , warning=FALSE}
 # Plotting the Trained Model
 plot(model_svm)
 
-
+```
+### Fitting the Trained SVM Model
+```{r p12,echo =FALSE , warning=FALSE}
 predict_svm <- predict(model_svm, df.test)
+```
+ ## Evaluation 
+### Step 1 Building a Confusion Matrix
 
-# Confusion Matrix
+
+It is a tabular representation of Actual vs Predicted values. This helps to find the accuracy of the model and avoid overfitting. 
+```{r p13,echo =FALSE , warning=FALSE}
 print("Confusion Matrix for SVM")
 cm_svm <- confusionMatrix(table(as.factor(df.test$is_attributed),predict_svm))
 cm_svm
+```
+### Step 2 Finding Cohen's Kappa
 
-# Cohen's Kappa
+```{r p14,echo =FALSE , warning=FALSE}
 print("kappa value for SVM")
 cm_svm$overall[2]
+```
 
-# Accuracy
+### Step 3 Finding Accuracy Value
+```{r p15,echo =FALSE , warning=FALSE}
 print("Accuracy value for SVM")
 cm_svm$overall[1]
+```
+### Step 4 Building a ROC Curve
 
-#ROC Curve
+An ROC curve demonstrates several things for 2-class classification algorithms:
+
+It shows the tradeoff between sensitivity and specificity (any increase in sensitivity will be accompanied by a decrease in specificity).
+The closer the curve follows the left-hand border and then the top border of the ROC space, the more accurate the test.
+The closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
+
+``` {r p16,echo =FALSE,  warning = FALSE, message = FALSE}
+
 library(pROC)
 plot(roc(df.test$is_attributed, as.numeric(predict_svm), direction="<"),
       col="yellow", lwd=3, main="ROC Curve for SVM")

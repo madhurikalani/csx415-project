@@ -8,10 +8,11 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 ## Loading the Project
 
-```{r p0, echo =FALSE, warning=FALSE}
+The first step of model evaluation is to load the project. It includes installing all the necessary libraries and data munging to prepare the training and test data sets, feature selection.
+
+```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
 
 setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
@@ -24,14 +25,16 @@ library('caret')
 ```
 
 ## Training Model using Caret
-# Logistic regression
-# SVM Radial
-# Random Forest
-# Tree Rpart
-# Stochastic Gradient Boosting (Generalized Boosted Modeling)
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
+The caret package in R provides a powerful framework for classification.
+  Logistic regression
+  SVM Radial
+  Random Forest
+  Tree Rpart
+  Stochastic Gradient Boosting (Generalized Boosted Modeling)
+
+
+```{r e4, echo=FALSE, warning = FALSE}
 
 
 train_control <- trainControl(method="cv", number=3)
@@ -51,17 +54,22 @@ model_rpart <- train(as.factor(is_attributed)~app + channel + ip +device + os + 
 #05
 model_gbm <- train(as.factor(is_attributed)~app + channel + ip +device + os + click_time, data=df.train, method="gbm", trControl=train_control, verbose=FALSE)
 
-
+```
+## Summary of Models trained
+```{r e1, echo=FALSE, warning = FALSE}
 # Combining Results
 
 results <- resamples(list(Logistic=model_glm,SVM=model_svm,Rpart=model_rpart,RandomForest=model_rf,GBM=model_gbm))
 
 # summarize Results and Table comparison
 summary(results)
-
+```
+## Result: 
+```{r e0, echo=FALSE, warning = FALSE}
 #Top Performing Models
 bwplot(results)
 
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### As per the result, the best performing models are rpart and GBM. I will create a R Package which will predict the results using model object.
+

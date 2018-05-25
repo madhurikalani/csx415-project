@@ -11,7 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Loading the Project
 
-```{r p0, echo =FALSE}
+The first step of model training is to load the project. It includes installing all the necessary libraries and data munging to prepare the training and test data sets, doing exploratory data analysis to study the data and feature selection.
+
+```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
 setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
 library('ProjectTemplate')
@@ -22,25 +24,30 @@ library('caret')
 
 ## Model Training
 
-Using simple Logistic Regression model for Classification.
+Using simple Logistic Regression model :
 Logistic Regression is a classification algorithm. It is used to predict a binary outcome (1 / 0, Yes / No, True / False) given a set of independent variables.
 
 I will be using GLM function for training the model.
 GLM does not assume a linear relationship between dependent and independent variables. However, it assumes a linear relationship between link function and independent variables in logit model.The dependent variable need not to be normally distributed.
 
-```{r p1}
+### Training a Model
+
+
+```{r p1, warning=FALSE}
 # Logistic Regression Model to Classify
 model_glm <- glm(is_attributed ~ app + channel +os+ device+ip+ click_time, family="binomial", data = df.train)
+```
 
-train_control <- trainControl(method="cv", number=3)
-
-
-
-
+### Summary of Trained Model
+```{r p10,echo =FALSE , warning=FALSE}
 
 # Summary of the Trained Model
 summary(model_glm)
 
+```
+### Plotting the Model Object
+
+```{r p11,echo =FALSE , warning=FALSE}
 # Results of Trained Model
 plot(model_glm)
 
@@ -48,9 +55,10 @@ plot(model_glm)
 ```
 
 ## Fitting the Model
-### If the predicted value is greater than 0.5 then is_attributed = 1 else 0
+#### Comparing Predicted Values with Observed Values
+If the predicted value is greater than 0.5 then is_attributed = 1 else 0
 
-```{r p2}
+```{r p2,echo =FALSE,  warning=FALSE}
 
 # Predicting using Trained Model
 
@@ -68,12 +76,14 @@ results_test <- data.table(Actual=df.test$is_attributed,Predicted=predict_logist
 ```
 
 
-## Evaluation - Confusion Matrix
+## Evaluation 
 ### Step 1 Building a Confusion Matrix
+### Step 2 Finding Cohen's Kappa
+### Step 3 Finding Accuracy Value
 
 It is a tabular representation of Actual vs Predicted values. This helps to find the accuracy of the model and avoid overfitting. 
 
-```{r p3}
+```{r p3,echo =FALSE,  warning=FALSE}
 
 # Union Operation
 un = union(predict_logistic, as.numeric(df.test$is_attributed))
@@ -81,22 +91,37 @@ un = union(predict_logistic, as.numeric(df.test$is_attributed))
 # Creating a table for Confusion Matrix
 t = table(factor(predict_logistic, un), factor(as.factor(df.test$is_attributed), un))
 t
-# Confusion Matrix
-print("Confusion Matrix for Logisitc Regression")
+# Confusion Matrix for Logistic Regression
+
 cm_logistic<-confusionMatrix(t)
 cm_logistic
-# Cohen's Kappa
-print("kappa value for Logisitc Regression")
+
+# Cohen's Kappa for Logistic Regression
+
 cm_logistic$overall[2]
 
-# Accuracy
-print("Accuracy value for Logistic Regression")
+# Accuracy for Logistic Regression
+
 cm_logistic$overall[1]
 
+```
+
+### Step 4 Building a ROC Curve
+
+An ROC curve demonstrates several things for 2-class classification algorithms:
+
+It shows the tradeoff between sensitivity and specificity (any increase in sensitivity will be accompanied by a decrease in specificity).
+The closer the curve follows the left-hand border and then the top border of the ROC space, the more accurate the test.
+The closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
+
+``` {r p4,echo =FALSE,  warning = FALSE, message = FALSE}
 #ROC Curve
 library(pROC)
 plot(roc(df.test$is_attributed, predict_logistic1, direction="<"),
       col="yellow", lwd=3, main="ROC Curve for Logistic Regression Model")
-#
+
+setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection/pkg/myfirstpackage")
+saveRDS(model_glm, "model_glm.rds")
+
 
 ```
