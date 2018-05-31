@@ -11,7 +11,7 @@ train.sample.csv: This sample file has 1 million records spread across 13 column
 
 #### Path: ~\Ad_Fraud_Detection\docs
 
-File_Name: Formal_Problem_Statement_AdFraud_MadhuriKalani.HTML
+
 
 File_Name: Formal_Problem_Statement_AdFraud_MadhuriKalani.RMD
 
@@ -62,6 +62,8 @@ File_Name: model-performance-rpart.HTML
 
 File_Name: project-model-evaluation.HTML
 
+File_Name: Formal_Problem_Statement_AdFraud_MadhuriKalani.HTML
+
 ### Plots
 
 #### Path: ~\Ad_Fraud_Detection\graphs
@@ -80,6 +82,7 @@ ch5-1.jpg
 
 ch6-1.jpg
 
+#### Packages
 \pkgs
 
 AdFraud
