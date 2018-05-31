@@ -1,0 +1,12 @@
+Package: TestingPackage_AdFraud
+Type: Package
+Date: 2018-05-22
+Title: This is a test package which is used to test "AdFraud".
+Version: 0.1.1
+Author: Madhuri Kalani
+Maintainer: The package maintainer <madhuri.kalani@gmail.com>
+Description: There are two R files, one is Testing_Main.R which calls the package "AdFraud" 
+and testing_predict_gbm.R which calls the R script/function with the package.
+License: 
+Encoding: UTF-8
+LazyData: true
