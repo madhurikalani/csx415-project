@@ -14,7 +14,7 @@ The first step of model training is to load the project. It includes installing 
 
 ```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
 
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
 library('ProjectTemplate')
 load.project()
@@ -57,6 +57,7 @@ plot(model_gbm)
 ### Fitting the Trained GBM Model
 ```{r p12,echo =FALSE , warning=FALSE}
 predict_gbm <- predict(model_gbm, df.test)
+plot(predict_gbm)
 ```
 
  ## Evaluation 
@@ -92,7 +93,7 @@ It shows the tradeoff between sensitivity and specificity (any increase in sensi
 The closer the curve follows the left-hand border and then the top border of the ROC space, the more accurate the test.
 The closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
 
-``` {r p16,echo =FALSE,  warning = FALSE, message = FALSE}
+```{r p16,echo =FALSE, warning = FALSE, message =FALSE}
 
 library(pROC)
 plot(roc(df.test$is_attributed, as.numeric(predict_gbm), direction="<"),
@@ -101,4 +102,8 @@ plot(roc(df.test$is_attributed, as.numeric(predict_gbm), direction="<"),
 
 ```
 
-
+### Saving the model object as RDS to be used in a package
+```{r p17,echo =FALSE,  warning = FALSE}
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection/pkgs/AdFraud/data")
+saveRDS(model_gbm, "model_gbm.rds")
+```

@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 The first step of model training is to load the project. It includes installing all the necessary libraries and data munging to prepare the training and test data sets, doing exploratory data analysis to study the data and feature selection.
 
 ```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
 library('ProjectTemplate')
 load.project()
@@ -120,8 +120,7 @@ library(pROC)
 plot(roc(df.test$is_attributed, predict_logistic1, direction="<"),
       col="yellow", lwd=3, main="ROC Curve for Logistic Regression Model")
 
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection/pkg/myfirstpackage")
-saveRDS(model_glm, "model_glm.rds")
+
 
 
 ```

@@ -14,7 +14,7 @@ The first step of model evaluation is to load the project. It includes installin
 
 ```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
 
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
 library('ProjectTemplate')
 load.project()

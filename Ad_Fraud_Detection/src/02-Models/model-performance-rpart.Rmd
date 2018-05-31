@@ -16,7 +16,7 @@ The first step of model training is to load the project. It includes installing 
 
 ```{r p0, echo =FALSE, warning=FALSE, include=FALSE}
 
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 
 library('ProjectTemplate')
 load.project()
@@ -54,6 +54,8 @@ plot(model_rpart)
 ### Fitting the Trained rpart Model
 ```{r p12,echo =FALSE , warning=FALSE}
 predict_rpart <- predict(model_rpart, df.test)
+sum(as.integer(predict_rpart))
+print(predict_rpart)
 ```
  ## Evaluation 
 ### Step 1 Building a Confusion Matrix
@@ -62,7 +64,7 @@ predict_rpart <- predict(model_rpart, df.test)
 It is a tabular representation of Actual vs Predicted values. This helps to find the accuracy of the model and avoid overfitting. 
 ```{r p13,echo =FALSE , warning=FALSE}
 print("Confusion Matrix for tree: rpart")
-cm_rpart <- confusionMatrix(table(as.factor(df.test$is_attributed),predict_rpart))
+cm_rpart <- confusionMatrix(table(as.factor(test$is_attributed),predict_rpart))
 cm_rpart
 ```
 ### Step 2 Finding Cohen's Kappa
@@ -85,7 +87,7 @@ It shows the tradeoff between sensitivity and specificity (any increase in sensi
 The closer the curve follows the left-hand border and then the top border of the ROC space, the more accurate the test.
 The closer the curve comes to the 45-degree diagonal of the ROC space, the less accurate the test.
 
-``` {r p16,echo =FALSE,  warning = FALSE, message = FALSE}
+```{r p16,echo =FALSE,  warning = FALSE, message = FALSE}
 
 library(pROC)
 plot(roc(df.test$is_attributed, as.numeric(predict_rpart), direction="<"),
@@ -95,11 +97,9 @@ plot(roc(df.test$is_attributed, as.numeric(predict_rpart), direction="<"),
 ```
 
 
-## rpart function did not show the outcome as expected
-
-``` {r c2}
-
-
+### Saving the model object as RDS to be used in a package
+```{r p17,echo =FALSE,  warning = FALSE}
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection/pkgs/AdFraud/data")
+saveRDS(model_rpart, "model_rpart.rds")
 
 ```
-

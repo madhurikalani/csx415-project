@@ -41,7 +41,7 @@ differences:
 ### Step 1: Loading the Project and training data.
 ```{r ch1, echo=FALSE, warning=FALSE,message=FALSE}
 getwd()
-setwd("C:/Users/akash/Documents/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
+setwd("~/Madhuri stuff/Data_Science_Intro_R/Ad_Fraud_Detection")
 library('ProjectTemplate')
 load.project()
 
@@ -82,7 +82,7 @@ barplot(tbl, beside = TRUE, legend = TRUE, main= "Hourly Click Frequency")
 
 ```{r ch6, echo=FALSE,warning=FALSE,message=FALSE}
 
-M<-cor(train.sample[1:5])
+M<-cor(df.train[1:5])
 head(round(M,2))
 library('corrplot')
 corrplot(M, method="color")
@@ -117,7 +117,7 @@ plot(ev)
 
 
 
-```{r ch63, echo=FALSE,warning=FALSE,message=FALSE}
+```{r ch64, echo=FALSE,warning=FALSE,message=FALSE}
 library(caret)
 control <- trainControl(method="repeatedcv", number=3, repeats=3)
 # train the model
@@ -131,10 +131,7 @@ plot(importance)
 ```
 
 
-We know now our key features to be used to train our models.
-
-##### ---------------------------------------------------------------------------------------------work in progress--------------------------------------------
-
+We now know our key features to be used to train our models.
 
 
 
