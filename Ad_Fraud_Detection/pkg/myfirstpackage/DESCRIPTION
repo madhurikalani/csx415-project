@@ -1,4 +1,4 @@
-Package: AdFraudModelPkg
+Package: AdFraudModelPkg old
 Title: Builds Models For Given Training Data
 Version: 0.1.2
 Authors@R: person("Madhuri", "kalani", email = "madhuri.kalani@gmail.com", role = c("aut", "cre"))
